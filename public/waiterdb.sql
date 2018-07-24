@@ -36,9 +36,9 @@ INSERT INTO weekdays (dayName) VALUES ('Saturday');
 -- selcting a shift
 INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,1);
 INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,2);
-INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,2);
+INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,3);
 INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,7);
 
--- add  data into day_shifts
+
 
 
