@@ -34,13 +34,6 @@ const pool = new Pool({
 });
 
 
-
-
-
-
-
-
-
 app.use(bodyParser.urlencoded({
     extended:false
 }));
