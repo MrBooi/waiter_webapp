@@ -1,4 +1,4 @@
-drop table if exists waiterDB, weekdays,shifts;
+drop table if exists waiterDB, weekdays;
 
 create table waiterDB(
 id serial not null primary key,
@@ -12,11 +12,11 @@ CREATE TABLE weekdays(
   dayName VARCHAR(20)
 );
 
-CREATE TABLE shifts(
+CREATE TABLE dayShifts(
 id serial not NULL PRIMARY key,
-waiter_id  int not null 
- foreign key (waiter_id) references waiterDB(id),
-weekday_id int not null 
+waiter_id  int not null,
+weekday_id int not null ,
+foreign key (waiter_id) references waiterDB(id),
 foreign key (weekday_id) references weekdays(id)
 );
 
@@ -33,5 +33,12 @@ INSERT INTO weekdays (dayName) VALUES ('Wednesday');
 INSERT INTO weekdays (dayName) VALUES ('Thursday');
 INSERT INTO weekdays (dayName) VALUES ('Friday');
 INSERT INTO weekdays (dayName) VALUES ('Saturday');
+-- selcting a shift
+INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,1);
+INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,2);
+INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,2);
+INSERT INTO dayShifts (waiter_id,weekday_id) VALUES(1,7);
+
+-- add  data into day_shifts
 
 
