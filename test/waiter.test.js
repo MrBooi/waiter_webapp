@@ -21,13 +21,13 @@ let  waiter = Waiter(pool);
 
 describe('The weekdays function', () => {
     beforeEach(async  ()=> {
+      await pool.query('DELETE FROM dayShifts');
       await pool.query('DELETE FROM waiterDB');
       await pool.query('DELETE FROM weekdays');
-      await pool.query('DELETE FROM dayShifts');
-    
     });
     it('should add all the weekdays', async ()=> {
-     assert.deepEqual(await waiter.weekDays(),[ { dayname: 'Sunday' },
+      await waiter.weekDays();
+     assert.deepEqual( await waiter.getdays(),[ { dayname: 'Sunday' },
      { dayname: 'Monday' },
      { dayname: 'Tuesday' },
      { dayname: 'Wednesday' },
@@ -42,9 +42,9 @@ describe('The Add function  add waiters', () => {
     await pool.query('DELETE FROM dayShifts');
     await pool.query('DELETE FROM waiterDB');
     await pool.query('DELETE FROM weekdays');
-    await pool.query(' waiterdb.sql');
     });
     it('should return true if waiter is add sucessfuly', async ()=> {
+      await waiter.weekDays();
       let storedWaiter =await  waiter.add_waiter("MrAndre","Andre","waiter");
      assert.equal(storedWaiter,true);
     });
@@ -54,19 +54,39 @@ describe('The Add function  add waiters', () => {
   describe('waiter should Select a shift', () =>{
     beforeEach(async ()=> {
     await pool.query('DELETE FROM dayShifts');
+    await pool.query('DELETE FROM waiterDB');
+    await pool.query('DELETE FROM weekdays');
     });
     it('should allow user to add shift', async ()=> {
+      await waiter.weekDays();
+      await waiter.add_waiter("MrAndre","Andre","waiter")
         let select_shift = await waiter.dayShift('MrAndre','Monday');
          assert.deepEqual(select_shift,true);
     })
-  
-
-
-
-
-    after(async  ()=> {
-        await pool.end();
-      });
   });
 
+
+
+
+  describe('get All shifts', () =>{
+    beforeEach(async ()=> {
+  await pool.query('DELETE FROM dayShifts');
+  await pool.query('DELETE FROM weekdays');
+  await pool.query('DELETE FROM waiterDB');
+  
+    });
+    it('should get all shifts added', async ()=> {
+      await waiter.weekDays();
+      await waiter.add_waiter("MrAndre","Andre","waiter");
+       await waiter.dayShift('MrAndre','Monday'); 
+       assert.deepEqual(await waiter.shiftTest(),[{
+        username: 'MrAndre', dayname: 'Monday'
+         }]);
+    })
+  });
+
+
+   after(async  ()=> {
+        await pool.end();
+      });
    

@@ -1,10 +1,13 @@
 module.exports = Waiter = (pool) => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; 
+   
     const week_days = async () => {
         for (const day of days) {
             await pool.query('INSERT INTO weekdays (dayName) VALUES ($1)', [day]);
         }
+    }  
+
+    const getWeekdays = async()=>{
         let storedDays = await pool.query('SELECT dayName FROM weekdays');
         return storedDays.rows;
     }
@@ -16,6 +19,11 @@ module.exports = Waiter = (pool) => {
         } else {
             false;
         }
+    } 
+
+    const getWaiters= async()=>{
+        let storedWaiters = await pool.query('SELECT * FROM waiterDB WHERE position=$1',['waiter']);
+        return storedWaiters.rows;
     }
 
     const selectShift = async (username, day) => {
@@ -28,14 +36,36 @@ module.exports = Waiter = (pool) => {
             return false;
         }
     }
+    
+    const getShifts = async()=>{
+        let shifts  = await pool.query('SELECT * FROM dayShifts');
+        return shifts.rows;
+    }
+   
+    const shiftTest= async() =>{
+        let username ='MrAndre';
+        let day = 'Monday';
 
-
+        let check = await pool.query(
+            `SELECT distinct username, dayName FROM dayShifts 
+            JOIN waiterDB ON waiterDB.id = dayShifts.waiter_id 
+            JOIN weekdays ON weekdays.id = dayShifts.weekday_id 
+            WHERE waiterDB.username ='${username}' AND weekdays.dayName='${day}'`    
+         );
+        // console.log(check.rows);
+        return check.rows;
+    }
 
 
     return {
         add_waiter: addWaiter,
+        getStoredWaiters :getWaiters,
         weekDays: week_days,
-        dayShift: selectShift
+        getdays: getWeekdays,
+        dayShift: selectShift,
+        getAvailabeShift: getShifts,
+        shiftTest
+        
     }
 
 }
