@@ -72,8 +72,6 @@ module.exports = Waiter = (pool) => {
         return storedShift.rows;
     }  
 
-    
-
 
     return {
         add_waiter: addWaiter,
