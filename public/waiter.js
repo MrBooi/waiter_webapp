@@ -31,11 +31,11 @@ module.exports = Waiter = (pool) => {
             const findUsernameID = await pool.query('SELECT id From waiterDB WHERE username=$1', [shift.username]);
             if (findUsernameID.rowCount >0) {
                 let userID =findUsernameID.rows[0].id;
-                weekdays.forEach(async element => { 
-                    let findDayID = await pool.query('SELECT id From weekdays WHERE dayName=$1', [element]);
+                for (let day of weekdays) {
+                    let findDayID = await pool.query('SELECT id From weekdays WHERE dayName=$1', [day]);
                     await pool.query('INSERT INTO dayShifts (waiter_id,weekday_id) VALUES($1,$2)'
                     ,[userID, findDayID.rows[0].id]); 
-                });
+                } 
                 return true;
             } else{
                 return false;
@@ -58,9 +58,19 @@ module.exports = Waiter = (pool) => {
             JOIN weekdays ON weekdays.id = dayShifts.weekday_id 
             WHERE waiterDB.username ='${username}' AND weekdays.dayName='${day}'`    
          );
-        // console.log(check.rows);
         return check.rows;
-    }   
+    }  
+    
+    
+
+    const allShifts= async() =>{
+        let storedShift = await pool.query(
+            `SELECT username, dayName FROM dayShifts 
+            JOIN waiterDB ON waiterDB.id = dayShifts.waiter_id 
+            JOIN weekdays ON weekdays.id = dayShifts.weekday_id`    
+         );
+        return storedShift.rows;
+    }  
 
     
 
@@ -72,7 +82,8 @@ module.exports = Waiter = (pool) => {
         getdays: getWeekdays,
         dayShift: selectShift,
         getAvailabeShift: getShifts,
-        shiftTest
+        shiftTest,
+        allShifts
         
     }
 
