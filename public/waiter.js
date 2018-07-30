@@ -26,15 +26,21 @@ module.exports = Waiter = (pool) => {
         return storedWaiters.rows;
     }
 
-    const selectShift = async (username, day) => {
-        if (username !== '' && day !== '') {
-            let findUsernameID = await pool.query('SELECT id From waiterDB WHERE username=$1', [username]);
-            let findDayID = await pool.query('SELECT id From weekdays WHERE dayName=$1', [day]);
-             await pool.query('INSERT INTO dayShifts (waiter_id,weekday_id) VALUES($1,$2)',[findUsernameID.rows[0].id, findDayID.rows[0].id]);
-            return true;
-        } else {
-            return false;
-        }
+    const selectShift = async (shift) => { 
+            const weekdays = shift.days;
+            const findUsernameID = await pool.query('SELECT id From waiterDB WHERE username=$1', [shift.username]);
+            if (findUsernameID.rowCount >0) {
+                let userID =findUsernameID.rows[0].id;
+                weekdays.forEach(async element => { 
+                    let findDayID = await pool.query('SELECT id From weekdays WHERE dayName=$1', [element]);
+                    await pool.query('INSERT INTO dayShifts (waiter_id,weekday_id) VALUES($1,$2)'
+                    ,[userID, findDayID.rows[0].id]); 
+                });
+                return true;
+            } else{
+                return false;
+            }
+
     }
     
     const getShifts = async()=>{
@@ -54,7 +60,9 @@ module.exports = Waiter = (pool) => {
          );
         // console.log(check.rows);
         return check.rows;
-    }
+    }   
+
+    
 
 
     return {
