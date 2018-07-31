@@ -119,9 +119,6 @@ describe('Get all stored shifts', () => {
 });
 
 
-
-
-
 after(async () => {
   await pool.end();
 });

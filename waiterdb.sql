@@ -9,7 +9,7 @@ position text not null
 
 CREATE TABLE weekdays(
  id serial not null PRIMARY KEY ,
-  dayName VARCHAR(20)
+  dayName  VARCHAR(20) UNIQUE 
 );
 
 CREATE TABLE dayShifts(
@@ -24,6 +24,9 @@ foreign key (weekday_id) references weekdays(id)
 -- --  INSERT data into waiter
 INSERT INTO waiterDB (username,full_name,position) VALUES ('Av','Aviwe boss','waiter');
 INSERT INTO waiterDB (username,full_name,position) VALUES ('Mrsono','Luvuyo sono','waiter');
+INSERT INTO waiterDB (username,full_name,position) VALUES ('MrGreg','Greg','waiter');
+INSERT INTO waiterDB (username,full_name,position) VALUES ('MrAndre','Andre','waiter');
+INSERT INTO waiterDB (username,full_name,position) VALUES ('MrBooi','Ayabonga Booi','waiter');
 INSERT INTO waiterDB (username,full_name,position) VALUES ('Mrbooi','Ayabonga Booi','Admin');
 -- -- INSERT WEEKDAYS
 INSERT INTO weekdays (dayName) VALUES ('Sunday');

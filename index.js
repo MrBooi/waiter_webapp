@@ -3,6 +3,8 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const flash = require('express-flash');
 const session = require('express-session');
+const Waiter = require('./public/waiter.js');
+
 
 const app = express();
 
@@ -21,49 +23,77 @@ app.use(flash());
 const pg = require('pg');
 const Pool = pg.Pool;
 
+
+
 let useSSL = false;
 if (process.env.DATABASE_URL) {
     useSSL = true;
 }
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://coder:coder123@localhost:5432/waiter-availability'
-
+// 
 const pool = new Pool({
     connectionString,
     ssl: useSSL
 });
-
+let waiter = Waiter(pool);
 
 app.use(bodyParser.urlencoded({
-    extended:false
+    extended: false
 }));
 
 app.use(bodyParser.json());
 
 app.engine('handlebars', exphbs({
-defaultLayout: 'main'
+    defaultLayout: 'main'
 }));
 
- app.set('view engine', 'handlebars');
+app.set('view engine', 'handlebars');
 
-app.get('/',(req,res)=>{
- res.send('Working');
+app.get('/', (req, res) => {
+    res.render('home');
 })
 
-app.get('/waiters/:username',(req,res)=>{
-res.send('working select working days',req.params.username);
+app.get('/waiters/:username', async (req, res, next) => {
+    try {
+        let username = req.params.username;
+        let weekdays = await waiter.getdays();
+        res.render('home', {
+            daynames: weekdays , username
+        });
+    } catch (error) {
+        next(error);
+    }
 })
 
-// app.post('/waiters/:username',(req,res) =>{
-//     res.send(req.params.username);
-// })
+app.post('/waiters/:username', async (req, res, next) => {
+    try {
+        let weekdays = await waiter.getdays();
+        let username =req.params.username;
+        let shift = {
+            username:username ,
+            days: req.body.dayname
+        }
+        let check =await waiter.dayShift(shift);
+        console.log(check);
 
-app.get('/days',(req,res)=>{
-    res.send('getting days');
+        res.render('home', {
+            daynames: weekdays ,username
+        });
+    } catch (error) {
+        next(error);
+    }
+
+
+
 })
 
-app.listen(PORT,(err) => {
+app.get('/days', (req, res) => {
+
+
+    res.render('days');
+})
+
+app.listen(PORT, (err) => {
     console.log('App starting on port', PORT)
-  });
- 
-
+});

@@ -1,0 +1,47 @@
+h1{
+    text-align: center;
+    color: rgb(35, 11, 168);
+}
+
+.username{
+font-size: 2rem;
+font-family: fantasy;
+}
+
+#weekdays{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+
+}
+
+
+#weekdays td, #weekdays th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#weekdays tr:nth-child(even){background-color: #f2f2f2;}
+
+#weekdays tr:hover {background-color: #ddd;}
+
+#weekdays th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: rgb(35, 11, 168);
+    color: white;
+}
+
+#shift ,#clear{
+ background-color:#4CAF50;
+ border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}

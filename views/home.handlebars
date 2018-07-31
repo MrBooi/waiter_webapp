@@ -1,12 +1,28 @@
+<div class="container">
+    <form action="/waiters/{{username}}" method="post">
 
-<form action="/waiter/{{}}" method="post">
+        <h3 class="username">Hello Ayabonga Booi</h3>
+        <table id="weekdays">
+            
+            <tr>
+                {{#each daynames}}
+                    <th>{{dayname}}</th>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each daynames}}
+                <td>
+                    <input type="checkbox" name="dayname" id="" value="{{dayname}}">
+                </td>
+                {{/each}}
+            </tr>
+        </table>
+
+        <button type="submit" id="shift">add shifts</button>
 
 
+      
 
 
-
-
-
-
-
-</form>
+    </form>
+</div>
