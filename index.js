@@ -74,9 +74,7 @@ app.post('/waiters/:username', async (req, res, next) => {
             username:username ,
             days: req.body.dayname
         }
-        let check =await waiter.dayShift(shift);
-        console.log(check);
-
+        await waiter.dayShift(shift);
         res.render('home', {
             daynames: weekdays ,username
         });
@@ -88,10 +86,17 @@ app.post('/waiters/:username', async (req, res, next) => {
 
 })
 
-app.get('/days', (req, res) => {
+app.get('/days', async (req, res,next) => {
+    try {
+        let weekdays = await waiter.getdays();
+        let storedShifts = await waiter.groupByDay();
+        console.log(storedShifts);
 
+        res.render('days',{daynames: weekdays,data:storedShifts});
+    } catch (error) {
+         next(error);
+    }
 
-    res.render('days');
 })
 
 app.listen(PORT, (err) => {

@@ -29,6 +29,7 @@ module.exports = Waiter = (pool) => {
     const selectShift = async (shift) => {
         const weekdays = shift.days;
         const findUsernameID = await pool.query('SELECT id From waiterDB WHERE username=$1', [shift.username]);
+        console.log(findUsernameID);
         if (findUsernameID.rowCount > 0) {
             let userID = findUsernameID.rows[0].id;
             for (let day of weekdays) {
@@ -62,12 +63,63 @@ module.exports = Waiter = (pool) => {
 
 
     const allShifts = async () => {
-        let storedShift = await pool.query(
-            `SELECT username, dayName FROM dayShifts 
+        let storedShifts = await pool.query(
+            `SELECT full_name, dayName FROM dayShifts 
             JOIN waiterDB ON waiterDB.id = dayShifts.waiter_id 
             JOIN weekdays ON weekdays.id = dayShifts.weekday_id`
         );
-        return storedShift.rows;
+        return storedShifts.rows;
+    }
+
+    const groupByDay = async () => {
+        let storedShifts = await allShifts();
+        const shiftArray = [{
+            id: 0,
+            day: 'Sunday',
+            Waiters: []
+        }, {
+            id: 1,
+            day: 'Monday',
+            Waiters: []
+        }, {
+            id: 2,
+            day: 'Tuesday',
+            Waiters: []
+        }, {
+            id: 3,
+            day: 'Wednesday',
+            Waiters: []
+        }, {
+            id: 4,
+            day: 'Thursday',
+            Waiters: []
+        }, {
+            id: 5,
+            day: 'Friday',
+            Waiters: []
+        }, {
+            id: 7,
+            day: 'Saturday',
+            Waiters: []
+        }]
+          
+           if(storedShifts.length > 0){
+               console.log(storedShifts.length);
+             for (let i = 0; i < storedShifts.length; i++) {
+                shiftArray.forEach(current => {
+                    if (current.day === storedShifts[i].dayname) {
+                        current.Waiters.push(storedShifts[i].full_name);
+                    // } else {
+                    //     shiftArray.push({
+                    //         day: storedShifts[i].dayname,
+                    //         Waiters: [].push(storedShifts[i].full_name)
+                    //     })
+                    }
+                })
+             }
+           }
+           
+            return shiftArray;
     }
 
 
@@ -79,7 +131,8 @@ module.exports = Waiter = (pool) => {
         dayShift: selectShift,
         getAvailabeShift: getShifts,
         shiftTest,
-        allShifts
+        allShifts,
+        groupByDay
 
     }
 

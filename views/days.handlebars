@@ -2,35 +2,18 @@
     <h1> days </h1>
 
     <table id="weekdays">
-      
         <tr>
-            <th>Sunday</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
-        </tr>
-        <tr>
-            <td>Ayabonga</td>
-            <td>Ayabonga</td>
-            <td>Ayabonga</td>
-            <td>Ayabonga</td>
-            <td>Ayabonga</td>
-            <td>Luvuyo</td>
-            <td>Aviwe</td>
-        </tr>
-        <tr>
-            <td>Aviwe</td>
-            <td>Ayabonga</td>
-            <td>Ayabonga</td>
-            <td>Ayabonga</td>
-            <td>Ayabonga</td>
-            <td>Ayabonga</td>
-            <td>Luvuyo</td>
-
-        </tr>
+                {{#each daynames}}
+                    <th>{{dayname}}</th>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each data}}
+                <td>
+                    {{Waiters}}
+                </td>
+                {{/each}}
+            </tr>
     </table>
 
 <button type="submit" id="clear">clear shifts</button>
