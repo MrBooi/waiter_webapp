@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="login">
+    <form class="form-inline login-from" method="POST" action="/sigin">
+     {{#if messages.error}}
+    <div class="errors">
+      <h3>{{messages.error}}</h3>
+    </div>
+    {{/if}}
+      <label class="sr-only" for="inlineFormInputGroupUsername2">Username</label>
+      <div class="input-group mb-2 mr-sm-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">@</div>
+        </div>
+        <input type="text" name='siginUsername' class="form-control " id="inlineFormInputGroupUsername2" placeholder="Username">
+      </div>
+      <button type="submit" class="btn btn-primary mb-2">Submit</button>
+    </form>
+  </div>
+</div>

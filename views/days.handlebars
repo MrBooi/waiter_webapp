@@ -1,21 +1,19 @@
-<div class="container">
-    <h1> days </h1>
-
-    <table id="weekdays">
-        <tr>
-                {{#each daynames}}
-                    <th>{{dayname}}</th>
-                {{/each}}
-            </tr>
-            <tr>
-                {{#each data}}
-                <td>
-                    {{Waiters}}
-                </td>
-                {{/each}}
-            </tr>
-    </table>
-
-<button type="submit" id="clear">clear shifts</button>
-
+<div class="containers">
+    <div class="">
+        <h1>days </h1>
+    <div id="">
+        {{#each storedShifts}}
+        <ul id="shiftdays">
+            <h6>{{day}}</h6>
+            {{#each Waiters}}
+            <li class="{{../color}}">{{this}}</li>
+            {{/each}}
+        </ul>
+        {{/each}}
+    </div>
+    </div>
+  <a href="/clear">
+  <button type="submit" id="clear">clear shifts</button>
+  </a> 
 </div>
+ 

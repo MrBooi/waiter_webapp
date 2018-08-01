@@ -1,9 +1,7 @@
 <div class="container">
     <form action="/waiters/{{username}}" method="post">
-
         <h3 class="username">Hello {{username}}</h3>
         <table id="weekdays">
-            
             <tr>
                 {{#each daynames}}
                     <th>{{dayname}}</th>
@@ -17,12 +15,11 @@
                 {{/each}}
             </tr>
         </table>
-
+           {{#if messages.info}}
+            <div class="shift">
+                <h3>{{messages.info}}</h3>
+            </div>
+            {{/if}}
         <button type="submit" id="shift">add shifts</button>
-
-
-      
-
-
-    </form>
+    </form>  
 </div>

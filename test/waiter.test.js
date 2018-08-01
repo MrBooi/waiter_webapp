@@ -16,7 +16,7 @@ const pool = new Pool({
 })
 
 // calling waiter factrory function 
-const Waiter = require('../public/waiter.js');
+const Waiter = require('../waiter.js');
 let waiter = Waiter(pool);
 
 describe('The weekdays function', () => {

@@ -7,6 +7,23 @@ module.exports = Waiter = (pool) => {
         }
     }
 
+    const findUser = async (username) => {
+        if (username != undefined || username != "") {
+            let found = await pool.query('SELECT * FROM waiterDB WHERE username=$1',[username]);
+         if(found.rowCount ===1){
+             return true;
+         }else{
+             return false;
+         }
+        }
+    }
+    
+    const findusername = async (username)=>{
+        let found = await pool.query('SELECT full_name FROM waiterDB WHERE username=$1',[username]);
+        return found.rows[0].full_name;
+    }
+
+
     const getWeekdays = async () => {
         let storedDays = await pool.query('SELECT dayName FROM weekdays');
         return storedDays.rows;
@@ -29,11 +46,12 @@ module.exports = Waiter = (pool) => {
     const selectShift = async (shift) => {
         const weekdays = shift.days;
         const findUsernameID = await pool.query('SELECT id From waiterDB WHERE username=$1', [shift.username]);
-        console.log(findUsernameID);
         if (findUsernameID.rowCount > 0) {
             let userID = findUsernameID.rows[0].id;
             for (let day of weekdays) {
+                console.log(day);
                 let findDayID = await pool.query('SELECT id From weekdays WHERE dayName=$1', [day]);
+
                 await pool.query('INSERT INTO dayShifts (waiter_id,weekday_id) VALUES($1,$2)', [userID, findDayID.rows[0].id]);
             }
             return true;
@@ -102,34 +120,43 @@ module.exports = Waiter = (pool) => {
             day: 'Saturday',
             Waiters: []
         }]
-          
-           if(storedShifts.length > 0){
-               console.log(storedShifts.length);
-             for (let i = 0; i < storedShifts.length; i++) {
+
+        if (storedShifts.length > 0) {
+            for (let i = 0; i < storedShifts.length; i++) {
                 shiftArray.forEach(current => {
                     if (current.day === storedShifts[i].dayname) {
                         current.Waiters.push(storedShifts[i].full_name);
-                    // } else {
-                    //     shiftArray.push({
-                    //         day: storedShifts[i].dayname,
-                    //         Waiters: [].push(storedShifts[i].full_name)
-                    //     })
+                    }
+                    if (current.Waiters.length < 3 && current.Waiters.length === 0) {
+                        current.color = "orange";
+                    } else if (current.Waiters.length > 3) {
+                        current.color = "blue";
+                    }
+                    if (current.Waiters.length === 3) {
+                        current.color = "green";
                     }
                 })
-             }
-           }
-           
-            return shiftArray;
+            }
+        }
+
+        return shiftArray;
     }
 
+    const deleteShifts = async () => {
+        let clear = await pool.query('DELETE FROM dayShifts');
+        return clear.rows;
+    }
 
     return {
         add_waiter: addWaiter,
         getStoredWaiters: getWaiters,
+        foundUser :findUser,
+        getUsername : findusername,
         weekDays: week_days,
         getdays: getWeekdays,
         dayShift: selectShift,
         getAvailabeShift: getShifts,
+        clearShifts: deleteShifts,
         shiftTest,
         allShifts,
         groupByDay
