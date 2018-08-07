@@ -56,8 +56,8 @@ module.exports = Waiter = (pool) => {
         const weekdays = shift.days;
         const findUsernameID = await pool.query('SELECT id From waiterDB WHERE username=$1', [shift.username]);
         if (findUsernameID.rowCount > 0) {
-            console.log(findUsernameID);
             let userID = findUsernameID.rows[0].id;
+            await pool.query('DELETE FROM dayShifts WHERE waiter_id =$1',[userID]);
             for (let day of weekdays) {
                 let findDayID = await pool.query('SELECT id From weekdays WHERE dayName=$1', [day]);
                 await pool.query('INSERT INTO dayShifts (waiter_id,weekday_id) VALUES($1,$2)', [userID, findDayID.rows[0].id]);
