@@ -86,22 +86,22 @@ describe('waiter should Select a shift', () => {
 });
 
 
-describe('Select a shift', () => {
-  beforeEach(async () => {
-    await pool.query('DELETE FROM dayShifts');
-  });
-  it('should a shift based on  username and dayName', async () => {
-    let shift = {
-      username: 'MrAndre',
-      days: ["Monday", "Thursday", "Wednesday"]
-    }
-    await waiter.dayShift(shift);
-    assert.deepEqual(await waiter.shiftTest(), [{
-      username: 'MrAndre',
-      dayname: 'Monday'
-    }]);
-  })
-});
+// describe('Select a shift', () => {
+//   beforeEach(async () => {
+//     await pool.query('DELETE FROM dayShifts');
+//   });
+//   it('should a shift based on  username and dayName', async () => {
+//     let shift = {
+//       username: 'MrAndre',
+//       days: ["Monday", "Thursday", "Wednesday"]
+//     }
+//     await waiter.dayShift(shift);
+//     assert.deepEqual(await waiter.shiftTest(), [{
+//       username: 'MrAndre',
+//       dayname: 'Monday'
+//     }]);
+//   })
+// });
 describe('Get all stored shifts', () => {
   it('should return a list of stored shifts', async () => {
     assert.deepEqual(await waiter.allShifts(), [{
