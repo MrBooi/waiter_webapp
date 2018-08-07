@@ -1,10 +1,56 @@
-<div class="container">
+ 
+    
+  <form action="/waiters/{{username}}" method="post">
+        <h3 class="username">Hello {{foundUser}}</h3>
+<table class="ui celled table" id="weekdays">
+    <tbody>
+        <tr>
+            {{#each daynames}}
+            <th>{{dayname}}</th>
+            {{/each}}
+        </tr>
+        <tr>
+            {{#each daynames}}
+            <td>
+            <input type="checkbox" name="dayname" id="" {{checkedDays}} value="{{dayname}}">
+            </td>
+            {{/each}}
+        </tr>
+</table>
+{{#if messages.info}}
+<div class="shift">
+    <h3>{{messages.info}}</h3>
+</div>
+{{/if}}
+<button type="submit" id="shift">add shifts</button>
+</tbody>
+</table>
+  </form>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {{!-- <div class="container">
     <form action="/waiters/{{username}}" method="post">
-        <h3 class="username">Hello {{username}}</h3>
+        <h3 class="username">Hello {{foundUser}}</h3>
         <table id="weekdays">
             <tr>
                 {{#each daynames}}
-                    <th>{{dayname}}</th>
+                <th>{{dayname}}</th>
                 {{/each}}
             </tr>
             <tr>
@@ -15,11 +61,11 @@
                 {{/each}}
             </tr>
         </table>
-           {{#if messages.info}}
-            <div class="shift">
-                <h3>{{messages.info}}</h3>
-            </div>
-            {{/if}}
+        {{#if messages.info}}
+        <div class="shift">
+            <h3>{{messages.info}}</h3>
+        </div>
+        {{/if}}
         <button type="submit" id="shift">add shifts</button>
-    </form>  
-</div>
+    </form>
+</div> --}}

@@ -9,23 +9,32 @@ module.exports = Waiter = (pool) => {
 
     const findUser = async (username) => {
         if (username != undefined || username != "") {
-            let found = await pool.query('SELECT * FROM waiterDB WHERE username=$1',[username]);
-         if(found.rowCount ===1){
-             return true;
-         }else{
-             return false;
-         }
+            let found = await pool.query('SELECT * FROM waiterDB WHERE username=$1', [username]);
+            if (found.rowCount === 1) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
-    
-    const findusername = async (username)=>{
-        let found = await pool.query('SELECT full_name FROM waiterDB WHERE username=$1',[username]);
+
+    const findusername = async (username) => {
+        let found = await pool.query('SELECT full_name FROM waiterDB WHERE username=$1', [username]);
         return found.rows[0].full_name;
     }
 
-
-    const getWeekdays = async () => {
+    const getWeekdays = async (username) => {
         let storedDays = await pool.query('SELECT dayName FROM weekdays');
+        let selectedShift = await findSelectedDays(username);
+        for (let i = 0; i < storedDays.rowCount; i++) {
+            let current = storedDays.rows[i];
+            selectedShift.forEach(days => {
+                let found = days.dayname;
+                if (current.dayname === found) {
+                    current.checked = true;
+                }
+            })
+        }
         return storedDays.rows;
     }
 
@@ -49,7 +58,7 @@ module.exports = Waiter = (pool) => {
         if (findUsernameID.rowCount > 0) {
             let userID = findUsernameID.rows[0].id;
             for (let day of weekdays) {
-                console.log(day);
+
                 let findDayID = await pool.query('SELECT id From weekdays WHERE dayName=$1', [day]);
 
                 await pool.query('INSERT INTO dayShifts (waiter_id,weekday_id) VALUES($1,$2)', [userID, findDayID.rows[0].id]);
@@ -65,27 +74,13 @@ module.exports = Waiter = (pool) => {
         let shifts = await pool.query('SELECT * FROM dayShifts');
         return shifts.rows;
     }
-
-    const shiftTest = async () => {
-        let username = 'MrAndre';
-        let day = 'Monday';
-        let check = await pool.query(
-            `SELECT distinct username, dayName FROM dayShifts 
-            JOIN waiterDB ON waiterDB.id = dayShifts.waiter_id 
-            JOIN weekdays ON weekdays.id = dayShifts.weekday_id 
-            WHERE waiterDB.username ='${username}' AND weekdays.dayName='${day}'`
-        );
-        return check.rows;
-    }
-
-
-
+    
     const allShifts = async () => {
         let storedShifts = await pool.query(
             `SELECT full_name, dayName FROM dayShifts 
             JOIN waiterDB ON waiterDB.id = dayShifts.waiter_id 
             JOIN weekdays ON weekdays.id = dayShifts.weekday_id`
-        );
+        )
         return storedShifts.rows;
     }
 
@@ -127,9 +122,10 @@ module.exports = Waiter = (pool) => {
                     if (current.day === storedShifts[i].dayname) {
                         current.Waiters.push(storedShifts[i].full_name);
                     }
-                    if (current.Waiters.length < 3 && current.Waiters.length === 0) {
+                    if (current.Waiters.length === 2) {
                         current.color = "orange";
-                    } else if (current.Waiters.length > 3) {
+                    }
+                    if (current.Waiters.length > 3) {
                         current.color = "blue";
                     }
                     if (current.Waiters.length === 3) {
@@ -138,7 +134,6 @@ module.exports = Waiter = (pool) => {
                 })
             }
         }
-
         return shiftArray;
     }
 
@@ -146,20 +141,24 @@ module.exports = Waiter = (pool) => {
         let clear = await pool.query('DELETE FROM dayShifts');
         return clear.rows;
     }
+    const findSelectedDays = async (username) => {
+        let foundDays = await pool.query('SELECT dayName FROM dayShifts JOIN waiterDB ON waiterDB.id = dayShifts.waiter_id JOIN weekdays ON weekdays.id = dayShifts.weekday_id WHERE username=$1', [username]);
+        return foundDays.rows;
+    }
 
     return {
         add_waiter: addWaiter,
         getStoredWaiters: getWaiters,
-        foundUser :findUser,
-        getUsername : findusername,
+        foundUser: findUser,
+        getUsername: findusername,
         weekDays: week_days,
         getdays: getWeekdays,
         dayShift: selectShift,
         getAvailabeShift: getShifts,
         clearShifts: deleteShifts,
-        shiftTest,
         allShifts,
-        groupByDay
+        groupByDay,
+        findSelectedDays
 
     }
 

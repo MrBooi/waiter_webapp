@@ -12,7 +12,7 @@ let PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.use(session({
-    secret: "keyboard cat",
+    secret: 'keyboard cat', 
     resave: false,
     saveUninitialized: true
 }));
@@ -45,13 +45,19 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.engine('handlebars', exphbs({
-    defaultLayout: 'main'
+    defaultLayout: 'main',
+    helpers: {
+        checkedDays: function () {
+            if (this.checked) {
+                return 'checked';
+            }
+        }}
+
 }));
 
 app.set('view engine', 'handlebars');
 
 app.get('/', (req, res) => {
-   
     res.render('sigin');
 }) 
 
@@ -73,11 +79,11 @@ app.post('/sigin', async(req,res ,next)=>{
 
 app.get('/waiters/:username', async (req, res, next) => {
     try {
-        let foundUser = req.params.username;
-        let username  = await waiter.getUsername(foundUser);
-        let weekdays = await waiter.getdays();
+        let username = req.params.username;
+        let foundUser  = await waiter.getUsername(username);
+        let weekdays = await waiter.getdays(username);
         res.render('home', {
-            daynames: weekdays , username
+            daynames: weekdays , username ,foundUser
         });
     } catch (error) {
         next(error);
@@ -108,9 +114,9 @@ app.post('/waiters/:username', async (req, res, next) => {
 
 app.get('/days', async (req, res,next) => {
     try {
-        let weekdays = await waiter.getdays();
+         await waiter.getdays();
         let storedShifts = await waiter.groupByDay();
-         console.log(storedShifts);
+        await waiter.findSelectedDays();
         res.render('days',{storedShifts});
     } catch (error) {
          next(error);
@@ -126,7 +132,6 @@ app.get('/clear', async (req,res,next) =>{
   next(error)
     }
 })
-
 
 app.listen(PORT, (err) => {
     console.log('App starting on port', PORT)

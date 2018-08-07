@@ -1,28 +1,47 @@
 h1 {
     text-align: center;
+    margin-bottom: 5rem;
     color: rgb(35, 11, 168);
 }
 
-.username {
-    font-size: 2rem;
-    font-family: fantasy;
+body {
+    background-color: #DADADA;
 }
 
-.login {
-    margin: 0 auto;
-    display: block;
-    max-width: 400px;
-    max-height: 400px;
-    border: 1px solid gray;
-    border-radius: 2px; 
-    background-color: grey;
-}
-.login-from{
-    margin: 4rem;
+body>.grid {
+    height: 100%;
 }
 
-#shift,
+.image {
+    margin-top: -100px;
+}
+
+.column {
+    max-width: 450px;
+}
+.topClear{
+ margin-right: 4em;
+}
 #clear {
+    float: right;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 100px;
+    font-size: 16px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+#clear:hover {
+    color: #000000;
+    transform: scale(1,1);
+}
+
+#shift {
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -38,14 +57,26 @@ h1 {
 #shiftdays {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 10%;
+  width: 180px;
     float: left;
+    text-align: center;
 }
 
+.moveDown {
+    margin: 2rem;
+}
+.box{
+    border: 1px solid gray;
+    border-radius: 2px;
+    min-height: 400px;
+    padding: 4px;
+    margin: 4rem;
+}
 #shiftdays li,
 #shiftdays h6 {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 4px;
+    text-align: center;
 }
 
 #shiftdays li:hover {
@@ -55,13 +86,14 @@ h1 {
 #shiftdays h6 {
     padding-top: 12px;
     padding-bottom: 12px;
-    text-align: left;
+    text-align: center;
     background-color: rgb(35, 11, 168);
     color: white;
 }
 
 ul {
-    list-style-type: none;
+    list-style-type: none; 
+    text-align: center;
 }
 
 .green {
@@ -100,12 +132,12 @@ ul {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: rgb(35, 11, 168);
+    background-color: #00b5ad;
     color: white;
 }
 
 @media only screen and (max-width: 960px) {
     #shiftdays {
-        width: 25%;
+      max-width: 200px;
     }
 }
