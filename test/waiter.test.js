@@ -106,13 +106,13 @@ describe('Get all stored shifts', () => {
   it('should return a list of stored shifts', async () => {
     assert.deepEqual(await waiter.allShifts(), [{
       dayname: 'Monday',
-      username: 'MrAndre'
+      "full_name": "Andre"
     }, {
       dayname: 'Thursday',
-      username: 'MrAndre'
+      "full_name": "Andre"
     }, {
       dayname: 'Wednesday',
-      username: 'MrAndre'
+      "full_name": "Andre"
       
     }]);
   })

@@ -57,7 +57,7 @@ body>.grid {
 #shiftdays {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-  width: 180px;
+  /* width: 160px; */
     float: left;
     text-align: center;
 }
@@ -90,10 +90,14 @@ body>.grid {
     background-color: rgb(35, 11, 168);
     color: white;
 }
-
+.rows {
+    width: 100%;
+}
 ul {
     list-style-type: none; 
     text-align: center;
+    padding: 2px; 
+    width: 160px;
 }
 
 .green {
