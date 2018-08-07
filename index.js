@@ -116,7 +116,6 @@ app.get('/days', async (req, res,next) => {
     try {
          await waiter.getdays();
         let storedShifts = await waiter.groupByDay();
-        await waiter.findSelectedDays();
         res.render('days',{storedShifts});
     } catch (error) {
          next(error);
