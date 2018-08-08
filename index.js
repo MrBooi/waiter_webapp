@@ -12,7 +12,7 @@ let PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.use(session({
-    secret: 'keyboard cat', 
+    secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true
 }));
@@ -51,7 +51,8 @@ app.engine('handlebars', exphbs({
             if (this.checked) {
                 return 'checked';
             }
-        }}
+        }
+    }
 
 }));
 
@@ -59,19 +60,19 @@ app.set('view engine', 'handlebars');
 
 app.get('/', (req, res) => {
     res.render('sigin');
-}) 
+})
 
-app.post('/sigin', async(req,res ,next)=>{
-    let username =req.body.siginUsername;
+app.post('/sigin', async (req, res, next) => {
+    let username = req.body.siginUsername;
     try {
         let found = await waiter.foundUser(username);
-         if(found){
-        res.redirect('/waiters/'+username);
-         } else{
-             res.redirect('/');
-            req.flash('error','oops unable login please provide correct username');
-         }
-            
+        if (found) {
+            res.redirect('/waiters/' + username);
+        } else {
+            req.flash('error', 'oops unable login please provide correct username');
+            res.redirect('/');
+        }
+
     } catch (error) {
         next(error);
     }
@@ -80,10 +81,12 @@ app.post('/sigin', async(req,res ,next)=>{
 app.get('/waiters/:username', async (req, res, next) => {
     try {
         let username = req.params.username;
-        let foundUser  = await waiter.getUsername(username);
+        let foundUser = await waiter.getUsername(username);
         let weekdays = await waiter.getdays(username);
         res.render('home', {
-            daynames: weekdays , username ,foundUser
+            daynames: weekdays,
+            username,
+            foundUser
         });
     } catch (error) {
         next(error);
@@ -92,43 +95,43 @@ app.get('/waiters/:username', async (req, res, next) => {
 
 app.post('/waiters/:username', async (req, res, next) => {
     try {
-        let weekdays = await waiter.getdays();
-        let username =req.params.username; 
-     if (weekdays != undefined || weekdays !=[] &&
-          username !=undefined || username != "" ) {
+        let username = req.params.username;
+        let weekdays = await waiter.getdays(username);
+        if (weekdays != undefined || weekdays != [] &&
+            username != undefined || username != "") {
             let shift = {
-                username:username ,
+                username: username,
                 days: Array.isArray(req.body.dayname) ? req.body.dayname : [req.body.dayname]
             }
+            req.flash('info', 'Succesfully added shift(s)');
             await waiter.dayShift(shift);
-            res.render('home', {
-                daynames: weekdays ,username
-            });
-            req.flash('info','Succesfully added shift(s)');
-           }
-        
+            res.redirect('/waiters/'+username);
+        }
+      
     } catch (error) {
         next(error);
     }
 })
 
-app.get('/days', async (req, res,next) => {
+app.get('/days', async (req, res, next) => {
     try {
-         await waiter.getdays();
+        await waiter.getdays();
         let storedShifts = await waiter.groupByDay();
-        res.render('days',{storedShifts});
+        res.render('days', {
+            storedShifts
+        });
     } catch (error) {
-         next(error);
+        next(error);
     }
 })
 
-app.get('/clear', async (req,res,next) =>{
+app.get('/clear', async (req, res, next) => {
     try {
-         await waiter.clearShifts();  
-     res.redirect('days');
-     // you have succefully deleted shifts
+        await waiter.clearShifts();
+        res.redirect('days');
+        req.flash('info', 'You have Succesfully deleted shift');
     } catch (error) {
-  next(error)
+        next(error)
     }
 })
 
