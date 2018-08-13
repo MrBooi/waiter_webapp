@@ -10,6 +10,12 @@
         "name": "Attach",
         "port": 9229
     },
+    {
+        "type": "node",
+        "request": "attach",
+        "name": "Attach",
+        "port": 9229
+    },
         {
             "type": "node",
             "request": "launch",

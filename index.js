@@ -31,7 +31,7 @@ if (process.env.DATABASE_URL) {
 }
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://coder:coder123@localhost:5432/waiter-availability'
-// 
+
 const pool = new Pool({
     connectionString,
     ssl: useSSL
@@ -65,8 +65,6 @@ app.get('/', (req, res) => {
 app.post('/sigin', async (req, res, next) => {
     const {job_Type,siginUsername} = req.body;
     let username =siginUsername;
-    console.log(username);
-    console.log(job_Type)
     try {
         let found = await waiter.foundUser(username,job_Type);
         if (found === 'waiter') {
@@ -74,8 +72,8 @@ app.post('/sigin', async (req, res, next) => {
         } else if(found ==='admin'){
             res.redirect('days');
         }else{
-          req.flash('error', 'oops unable login please provide correct username');
-            res.redirect('/');
+            req.flash('error','oops! Unable login please provide correct details');
+             res.redirect('/');
         }
     } catch (error) {
         next(error);
@@ -132,8 +130,8 @@ app.get('/days', async (req, res, next) => {
 app.get('/clear', async (req, res, next) => {
     try {
         await waiter.clearShifts();
-        res.redirect('days');
         req.flash('info', 'You have Succesfully deleted shift');
+        res.redirect('days');
     } catch (error) {
         next(error)
     }
@@ -150,22 +148,17 @@ try {
 app.post('/signup',async(req,res,next)=>{
  try {
     const {full_name,username,job_Type} = req.body;
-     console.log(job_Type);
     if (full_name !==undefined && username !==undefined
        && job_Type!==undefined && job_Type !=='') {
       if (await  waiter.add_waiter(username,full_name,job_Type)) {
-          console.log("user is registered");
-          req.flash('error', 'user is succesfully registered');
+          req.flash('info', 'user is succesfully registered');
       }else{
-          console.log('wrong details')
          req.flash('error', 'wrong details');
       }
     } else{
-         console.log('please make sure you fill all the input fields');
         req.flash('error', 'please make sure you fill all the input fields');
     }
-    //   res.redirect('signup');
-    res.render('signup');
+     res.render('signup');
  } catch (e) {
    next(e);
  }

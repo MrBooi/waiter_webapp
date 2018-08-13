@@ -24,8 +24,9 @@
         </div>
         <button class="ui fluid large teal submit button" type="submit">Login</button>
       </div>
+     
       {{#if messages.error}}
-      <div class="ui error message">
+      <div class="ui  message loginError orange"> 
         <h3>{{messages.error}}</h3>
       </div>
       {{/if}}
@@ -37,3 +38,5 @@
     </div>
   </div>
 </div>
+
+<script src="../control.js"></script>

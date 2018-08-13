@@ -33,10 +33,18 @@
       <button class="ui fluid large teal submit button" type="submit">Sign-up</button>
   </div>
   {{#if messages.error}}
-  <div class="ui error message">
+  <div class="ui  message signupErr orange">
     <h3>{{messages.error}}</h3>
+  </div>
+  {{/if}}
+
+   {{#if messages.info}}
+  <div class="ui  message signupErr green">
+    <h3>{{messages.info}}</h3>
   </div>
   {{/if}}
   </form>
 </div>
 </div>
+
+<script src="../control.js"></script>

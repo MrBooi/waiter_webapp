@@ -12,7 +12,7 @@ module.exports = Waiter = (pool) => {
         && job_Type !==undefined || job_Type !=='') {
             let found = await pool.query('SELECT * FROM waiterDB WHERE username=$1 And  position=$2 ', [username,job_Type]);
             if (found.rowCount === 1) {
-                console.log()
+
                 return found.rows[0].position;
              } 
             else {
