@@ -63,16 +63,20 @@ app.get('/', (req, res) => {
 })
 
 app.post('/sigin', async (req, res, next) => {
-    let username = req.body.siginUsername;
+    const {job_Type,siginUsername} = req.body;
+    let username =siginUsername;
+    console.log(username);
+    console.log(job_Type)
     try {
-        let found = await waiter.foundUser(username);
-        if (found) {
+        let found = await waiter.foundUser(username,job_Type);
+        if (found === 'waiter') {
             res.redirect('/waiters/' + username);
-        } else {
-            req.flash('error', 'oops unable login please provide correct username');
+        } else if(found ==='admin'){
+            res.redirect('days');
+        }else{
+          req.flash('error', 'oops unable login please provide correct username');
             res.redirect('/');
         }
-
     } catch (error) {
         next(error);
     }
@@ -134,6 +138,39 @@ app.get('/clear', async (req, res, next) => {
         next(error)
     }
 })
+
+app.get('/signup',async (req,res,next)=>{
+try {
+  res.render('signup');
+} catch (e) {
+    next(e);
+}
+})
+
+app.post('/signup',async(req,res,next)=>{
+ try {
+    const {full_name,username,job_Type} = req.body;
+     console.log(job_Type);
+    if (full_name !==undefined && username !==undefined
+       && job_Type!==undefined && job_Type !=='') {
+      if (await  waiter.add_waiter(username,full_name,job_Type)) {
+          console.log("user is registered");
+          req.flash('error', 'user is succesfully registered');
+      }else{
+          console.log('wrong details')
+         req.flash('error', 'wrong details');
+      }
+    } else{
+         console.log('please make sure you fill all the input fields');
+        req.flash('error', 'please make sure you fill all the input fields');
+    }
+    //   res.redirect('signup');
+    res.render('signup');
+ } catch (e) {
+   next(e);
+ }
+})
+
 
 app.listen(PORT, (err) => {
     console.log('App starting on port', PORT)

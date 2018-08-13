@@ -7,12 +7,15 @@ module.exports = Waiter = (pool) => {
         }
     }
 
-    const findUser = async (username) => {
-        if (username != undefined || username != "") {
-            let found = await pool.query('SELECT * FROM waiterDB WHERE username=$1', [username]);
+    const findUser = async (username,job_Type) => {
+        if (username != undefined || username != "" 
+        && job_Type !==undefined || job_Type !=='') {
+            let found = await pool.query('SELECT * FROM waiterDB WHERE username=$1 And  position=$2 ', [username,job_Type]);
             if (found.rowCount === 1) {
-                return true;
-            } else {
+                console.log()
+                return found.rows[0].position;
+             } 
+            else {
                 return false;
             }
         }
