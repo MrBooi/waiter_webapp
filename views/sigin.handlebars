@@ -3,6 +3,11 @@
     <h2 class="ui teal image header">
       {{!--
       <img src="" alt="" class="image"> --}}
+      {{#if messages.access}}
+      <div class="ui  message loginError orange"> 
+        <h3>{{messages.access}}</h3>
+      </div>
+      {{/if}}
       <div class="content">
         Log-in to your account
       </div>

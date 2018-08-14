@@ -50,11 +50,6 @@ module.exports = Waiter = (pool) => {
         }
     }
 
-    const getWaiters = async () => {
-        let storedWaiters = await pool.query('SELECT * FROM waiterDB WHERE position=$1', ['waiter']);
-        return storedWaiters.rows;
-    }
-
     const selectShift = async (shift) => {
         const weekdays = shift.days;
         const findUsernameID = await pool.query('SELECT id From waiterDB WHERE username=$1', [shift.username]);
@@ -70,11 +65,6 @@ module.exports = Waiter = (pool) => {
             return false;
         }
 
-    }
-
-    const getShifts = async () => {
-        let shifts = await pool.query('SELECT * FROM dayShifts');
-        return shifts.rows;
     }
 
     const allShifts = async () => {
@@ -150,17 +140,15 @@ module.exports = Waiter = (pool) => {
 
     return {
         add_waiter: addWaiter,
-        getStoredWaiters: getWaiters,
         foundUser: findUser,
         getUsername: findusername,
         weekDays: week_days,
         getdays: getWeekdays,
         dayShift: selectShift,
-        getAvailabeShift: getShifts,
         clearShifts: deleteShifts,
         allShifts,
         groupByDay,
-        findSelectedDays
+
 
     }
 

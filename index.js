@@ -62,12 +62,22 @@ app.get('/', (req, res) => {
     res.render('sigin');
 })
 
+const checkAccess =async (req,res,next) =>{
+ if(req.session.user_name !== req.params.username){
+   req.flash('access',"access denied");
+   res.redirect('/');
+ }else{
+ next();
+ }
+}
+
 app.post('/sigin', async (req, res, next) => {
     const {job_Type,siginUsername} = req.body;
     let username =siginUsername;
     try {
         let found = await waiter.foundUser(username,job_Type);
         if (found === 'waiter') {
+            req.session.user_name = username;
             res.redirect('/waiters/' + username);
         } else if(found ==='admin'){
             res.redirect('days');
@@ -80,7 +90,7 @@ app.post('/sigin', async (req, res, next) => {
     }
 })
 
-app.get('/waiters/:username', async (req, res, next) => {
+app.get('/waiters/:username', checkAccess, async  (req, res, next) => {
     try {
         let username = req.params.username;
         let foundUser = await waiter.getUsername(username);
