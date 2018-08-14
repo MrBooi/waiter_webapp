@@ -125,11 +125,12 @@ describe('Select a shift', () => {
       dayname: 'Monday',
       "full_name": "Andre"
     }, {
-      dayname: 'Wednesday',
+      dayname: 'Thursday',
       "full_name": "Andre"
 
     }, {
-      dayname: 'Thursday',
+      
+      dayname: 'Wednesday',
       "full_name": "Andre"
     }]);
   })
@@ -141,11 +142,10 @@ describe('Get all stored shifts', () => {
       dayname: 'Monday',
       "full_name": "Andre"
     }, {
-      dayname: 'Wednesday',
-      "full_name": "Andre"
-
-    }, {
       dayname: 'Thursday',
+      "full_name": "Andre"
+    }, {
+      dayname: 'Wednesday',
       "full_name": "Andre"
     }]);
   })
