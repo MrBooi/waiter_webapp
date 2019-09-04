@@ -90,7 +90,7 @@ app.post('/sigin', async (req, res, next) => {
     }
 })
 
-app.get('/waiters/:username', checkAccess, async  (req, res, next) => {
+app.get('/waiters/:username', async  (req, res, next) => {
     try {
         let username = req.params.username;
         let foundUser = await waiter.getUsername(username);
