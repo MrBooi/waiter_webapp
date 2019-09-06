@@ -1,7 +1,7 @@
 h1 {
     text-align: center;
     margin-bottom: 5rem;
-    color:#00b5ad
+    color: #00b5ad
 }
 
 body {
@@ -16,15 +16,32 @@ body>.grid {
     margin-top: -100px;
 }
 
-.dashboard{
-margin-top: 5%;
-padding: 1rem;
-width: 100%;
-border: 1px solid #00b5ad; 
+.dashboard {
+    margin-top: 5%;
+    padding: 1rem;
+    width: 100%;
+    border: 1px solid #00b5ad;
 }
-footer{
- text-align: center;
- background-color: #00b5ad;
+
+footer {
+    text-align: center;
+    background-color: #00b5ad;
+}
+
+.logout {
+    text-align: end;
+    display: inline-block;
+    margin-left: 85%;
+}
+
+.logout,
+.sign-out {
+    font-size: 25px;
+}
+
+.logout,
+.sign-out:hover {
+    color: #000000;
 }
 
 .shift {
@@ -36,28 +53,30 @@ footer{
     background-color: #4caf50;
 }
 
-.shift h3{
+.shift h3 {
     color: white;
 }
 
-.username{ 
+.username {
     font-size: 2rem;
     color: #4CAF50;
-   display: inline-block;
-   margin-right: 1rem;
+    display: inline-block;
+    margin-right: 1rem;
 }
 
-span{
- font-size: 2rem;
- color: #00b5ad;
+span {
+    font-size: 2rem;
+    color: #00b5ad;
 }
 
 .column {
     max-width: 450px;
 }
-.topClear{
- margin-right: 4em;
+
+.topClear {
+    margin-right: 4em;
 }
+
 #clear {
     float: right;
     background-color: #4CAF50;
@@ -74,7 +93,7 @@ span{
 
 #clear:hover {
     color: #000000;
-    transform: scale(1,1);
+    transform: scale(1, 1);
 }
 
 #shift {
@@ -93,7 +112,7 @@ span{
 #shiftdays {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-  /* width: 160px; */
+    /* width: 160px; */
     float: left;
     text-align: center;
 }
@@ -101,13 +120,15 @@ span{
 .moveDown {
     margin: 2rem;
 }
-.box{
+
+.box {
     border: 1px solid #00b5ad;
     border-radius: 2px;
     min-height: 400px;
     padding: 4px;
     margin: 4rem;
 }
+
 #shiftdays li,
 #shiftdays h6 {
     border: 1px solid #ddd;
@@ -126,13 +147,15 @@ span{
     background-color: rgb(35, 11, 168);
     color: white;
 }
+
 .rows {
     width: 100%;
 }
+
 ul {
-    list-style-type: none; 
+    list-style-type: none;
     text-align: center;
-    padding: 2px; 
+    padding: 2px;
     width: 160px;
 }
 
@@ -178,6 +201,6 @@ ul {
 
 @media only screen and (max-width: 960px) {
     #shiftdays {
-      max-width: 200px;
+        max-width: 200px;
     }
 }

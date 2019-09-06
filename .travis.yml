@@ -2,14 +2,14 @@
 language: node_js
 
 env:
-     - DB=postgresql://postgres@localhost:5432/waiterdbtest
+     - DB=postgresql://postgres@localhost:5432/waiterdb_test
      
 node_js:  
         - "8.9.4"
         
 before_script:
-  - psql -c 'create database waiterdbtest;' -U postgres
-  - psql -U postgres -d waiterdbtest -a -f waiterdb.sql
+  - psql -c 'create database waiterdb_test;' -U postgres
+  - psql -U postgres -d waiterdb_test -a -f waiterdb.sql
 
 addons:
     apt:
